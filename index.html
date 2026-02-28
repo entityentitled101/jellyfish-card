@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="趋光性 Photo taxi - 一只笨拙的机器水母">
     <title>趋光性 | Photo taxi</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,29 +14,39 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            touch-action: none;
         }
         
         body {
             background: #0a0a0a;
-            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             font-family: 'Noto Serif SC', serif;
-            overflow: hidden;
         }
         
         #canvas-container {
             position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         
         /* 文字层 - 绝对定位在 canvas 上方 */
         #text-layer {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             pointer-events: none;
         }
         
@@ -47,16 +57,15 @@
             font-weight: 300;
             letter-spacing: 0.08em;
             line-height: 1.8;
-            /* 不显示边框 */
         }
         
         .text-block p {
             margin: 0;
         }
         
-        /* 标题样式 */
+        /* 标题样式 - 基础 */
         .title-cn {
-            font-size: 42px;
+            font-size: 36px;
             font-weight: 400;
             letter-spacing: 0.25em;
             color: #fff;
@@ -64,7 +73,7 @@
         
         .title-en {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 300;
             font-style: italic;
             letter-spacing: 0.12em;
@@ -73,50 +82,50 @@
         }
         
         .subtitle-cn {
-            font-size: 13px;
+            font-size: 12px;
             letter-spacing: 0.1em;
             color: rgba(255, 255, 255, 0.5);
         }
         
         .subtitle-en {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 300;
             font-style: italic;
             letter-spacing: 0.08em;
             color: rgba(255, 255, 255, 0.4);
         }
         
-        /* 正文样式 */
+        /* 正文样式 - 基础 */
         .body-text {
-            font-size: 12px;
-            line-height: 2;
+            font-size: 11px;
+            line-height: 1.9;
             color: rgba(255, 255, 255, 0.85);
         }
         
         /* 小标题 */
         .section-title {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 500;
             letter-spacing: 0.15em;
             color: #fff;
             border-bottom: 0.5px solid rgba(255, 255, 255, 0.3);
-            padding-bottom: 4px;
+            padding-bottom: 3px;
             display: inline-block;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
         
         /* 封底文字 */
         .back-text {
-            font-size: 18px;
+            font-size: 16px;
             letter-spacing: 0.15em;
             color: #fff;
-            line-height: 2.2;
+            line-height: 2;
         }
         
         .back-signature {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 300;
             font-style: italic;
             letter-spacing: 0.1em;
@@ -126,11 +135,12 @@
         /* 页码指示器 */
         #page-indicator {
             position: fixed;
-            bottom: 30px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 12px;
+            gap: 10px;
+            z-index: 100;
         }
         
         .dot {
@@ -148,14 +158,116 @@
         /* 提示文字 */
         #hint {
             position: fixed;
-            bottom: 50px;
+            bottom: 45px;
             left: 50%;
             transform: translateX(-50%);
             font-family: 'Cormorant Garamond', serif;
-            font-size: 11px;
+            font-size: 10px;
             font-style: italic;
-            color: rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.25);
             letter-spacing: 0.1em;
+            pointer-events: none;
+            z-index: 100;
+        }
+        
+        /* 页面文字容器 */
+        .page-text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* ========== 移动端适配 ========== */
+        @media (max-width: 400px) {
+            .title-cn {
+                font-size: 28px;
+                letter-spacing: 0.2em;
+            }
+            
+            .title-en {
+                font-size: 12px;
+            }
+            
+            .subtitle-cn {
+                font-size: 10px;
+            }
+            
+            .subtitle-en {
+                font-size: 9px;
+            }
+            
+            .body-text {
+                font-size: 10px;
+                line-height: 1.8;
+            }
+            
+            .section-title {
+                font-size: 11px;
+                margin-bottom: 6px;
+            }
+            
+            .back-text {
+                font-size: 14px;
+            }
+            
+            .back-signature {
+                font-size: 10px;
+            }
+        }
+        
+        /* 超小屏幕 */
+        @media (max-width: 350px) {
+            .title-cn {
+                font-size: 24px;
+            }
+            
+            .body-text {
+                font-size: 9px;
+                line-height: 1.7;
+            }
+            
+            .section-title {
+                font-size: 10px;
+            }
+        }
+        
+        /* 平板 */
+        @media (min-width: 768px) {
+            .title-cn {
+                font-size: 42px;
+            }
+            
+            .title-en {
+                font-size: 16px;
+            }
+            
+            .subtitle-cn {
+                font-size: 13px;
+            }
+            
+            .subtitle-en {
+                font-size: 11px;
+            }
+            
+            .body-text {
+                font-size: 12px;
+                line-height: 2;
+            }
+            
+            .section-title {
+                font-size: 14px;
+                margin-bottom: 10px;
+            }
+            
+            .back-text {
+                font-size: 18px;
+            }
+            
+            .back-signature {
+                font-size: 12px;
+            }
         }
     </style>
 </head>
@@ -165,40 +277,41 @@
         <!-- 文字层 -->
         <div id="text-layer">
             <!-- 第1页：封面 -->
-            <div class="page-text" data-page="0">
-                <div class="text-block" style="top: 28%; left: 50%; transform: translateX(-50%); text-align: center;">
+            <div class="page-text" id="page-0">
+                <div class="text-block" id="p0-title">
                     <div class="title-cn">趋光性</div>
-                    <div class="title-en" style="margin-top: 8px;">Photo taxi</div>
+                    <div class="title-en">Photo taxi</div>
                 </div>
-                <div class="text-block" style="top: 52%; left: 50%; transform: translateX(-50%); text-align: center;">
+                
+                <div class="text-block" id="p0-subtitle">
                     <div class="subtitle-cn">一只笨拙的机器水母</div>
-                    <div class="subtitle-en" style="margin-top: 4px;">a clumsy machine jellyfish</div>
+                    <div class="subtitle-en">a clumsy machine jellyfish</div>
                 </div>
             </div>
             
             <!-- 第2页：起源 -->
-            <div class="page-text" data-page="1" style="display: none;">
-                <div class="text-block body-text" style="top: 18%; left: 15%; width: 70%;">
+            <div class="page-text" id="page-1" style="display: none;">
+                <div class="text-block body-text" id="p1-t1">
                     <p>它不是为效率而生的。</p>
                 </div>
                 
-                <div class="text-block body-text" style="top: 30%; left: 15%; width: 70%;">
+                <div class="text-block body-text" id="p1-t2">
                     <p>万向轮承托着身体，<br>
                     方向交给四只不太听话的小脚，<br>
                     和一个软乎乎的硅胶脑袋。</p>
                 </div>
                 
-                <div class="text-block body-text" style="top: 50%; left: 15%; width: 70%;">
+                <div class="text-block body-text" id="p1-t3">
                     <p>当 AI 已经学会最快的捷径，<br>
                     它却选择贴着墙根摸索。</p>
                 </div>
                 
-                <div class="text-block body-text" style="top: 66%; left: 15%; width: 70%;">
+                <div class="text-block body-text" id="p1-t4">
                     <p>它很慢，会迷路，<br>
                     有时候会在桌腿间趴成一团。</p>
                 </div>
                 
-                <div class="text-block body-text" style="top: 82%; left: 15%; width: 70%;">
+                <div class="text-block body-text" id="p1-t5">
                     <p>但当你把它搬到光里，<br>
                     它会用整个身体慢慢亮起来，<br>
                     像在说：找到了。</p>
@@ -206,9 +319,8 @@
             </div>
             
             <!-- 第3页：照料指南 -->
-            <div class="page-text" data-page="2" style="display: none;">
-                <!-- 习性 -->
-                <div class="text-block" style="top: 15%; left: 12%; width: 76%;">
+            <div class="page-text" id="page-2" style="display: none;">
+                <div class="text-block" id="p2-s1">
                     <div class="section-title">习性</div>
                     <div class="body-text">
                         <p>趋光，但不懂直线。<br>
@@ -218,8 +330,7 @@
                     </div>
                 </div>
                 
-                <!-- 社交 -->
-                <div class="text-block" style="top: 44%; left: 12%; width: 76%;">
+                <div class="text-block" id="p2-s2">
                     <div class="section-title">社交</div>
                     <div class="body-text">
                         <p>单只时安静呼吸，<br>
@@ -228,8 +339,7 @@
                     </div>
                 </div>
                 
-                <!-- 注意 -->
-                <div class="text-block" style="top: 73%; left: 12%; width: 76%;">
+                <div class="text-block" id="p2-s3">
                     <div class="section-title">注意</div>
                     <div class="body-text">
                         <p>不要修理它的笨拙。<br>
@@ -240,15 +350,15 @@
             </div>
             
             <!-- 第4页：封底 -->
-            <div class="page-text" data-page="3" style="display: none;">
-                <div class="text-block" style="top: 38%; left: 50%; transform: translateX(-50%); text-align: center;">
+            <div class="page-text" id="page-3" style="display: none;">
+                <div class="text-block" id="p3-text">
                     <div class="back-text">
                         <p>它在找光，</p>
                         <p>也许也在找你。</p>
                     </div>
                 </div>
                 
-                <div class="text-block" style="top: 62%; left: 50%; transform: translateX(-50%); text-align: center;">
+                <div class="text-block" id="p3-sig">
                     <div class="back-signature">—— Hackathon 2025</div>
                 </div>
             </div>
