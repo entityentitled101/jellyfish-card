@@ -2,494 +2,357 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="趋光性 Photo taxi - 一只笨拙的机器水母">
-    <title>趋光性 | Photo taxi</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>趋光性 Photo taxi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-        
-        html, body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            touch-action: none;
         }
         
         body {
-            background: #0a0a0a;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background-color: #0a0a0a;
+            color: #e8e8e8;
             font-family: 'Noto Serif SC', serif;
-        }
-        
-        #canvas-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-        
-        /* 文字层 */
-        #text-layer {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            width: 500px;
-            height: 500px;
-        }
-        
-        /* 页面文字容器 */
-        .page-text {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-        
-        /* 文字块 - 隐形容器 */
-        .text-block {
-            position: absolute;
-            color: rgba(255, 255, 255, 0.9);
-            font-weight: 300;
-            letter-spacing: 0.08em;
-            line-height: 1.8;
-        }
-        
-        .text-block p {
+            min-height: 100vh;
             margin: 0;
         }
         
-        /* ========== 第1页：封面 ========== */
-        #p0-title {
-            top: 22%;
-            left: 50%;
-            transform: translateX(-50%);
+        .card-container {
+            width: 600px;
+            height: 600px;
+            position: relative;
+            background: #000;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 80px rgba(255, 255, 255, 0.03);
+            cursor: pointer;
+            overflow: hidden;
+        }
+        
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .page.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .en-text {
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+        }
+        
+        /* 第1页（封面）- 严格居中 */
+        .page-1 {
+            justify-content: center;
+            align-items: center;
             text-align: center;
         }
         
-        #p0-subtitle {
-            top: 48%;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-        }
-        
-        /* ========== 第2页：起源 - 左右穿插排版 ========== */
-        #p1-t1 { 
-            top: 12%; 
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-        }
-        #p1-t2 { 
-            top: 26%; 
-            left: 14%;
-            width: 72%;
-        }
-        #p1-t3 { 
-            top: 44%; 
-            left: 14%;
-            width: 72%;
-        }
-        #p1-t4 { 
-            top: 60%; 
-            left: 14%;
-            width: 72%;
-        }
-        #p1-t5 { 
-            top: 76%; 
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            width: 80%;
-        }
-        
-        /* ========== 第3页：照料指南 - 左右穿插排版 ========== */
-        #p2-s1 { 
-            top: 12%; 
-            left: 14%;
-            width: 72%;
-        }
-        #p2-s2 { 
-            top: 38%; 
-            left: 14%;
-            width: 72%;
-        }
-        #p2-s3 { 
-            top: 64%; 
-            left: 14%;
-            width: 72%;
-        }
-        
-        /* ========== 第4页：封底 ========== */
-        #p3-text {
-            top: 40%;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-        }
-        
-        #p3-sig {
-            top: 60%;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-        }
-        
-        /* 标题样式 */
-        .title-cn {
-            font-size: 42px;
+        .page-1 h1 {
+            font-size: 56px;
             font-weight: 400;
             letter-spacing: 0.25em;
-            color: #fff;
+            margin-bottom: 8px;
+            margin-left: 0.25em;
         }
         
-        .title-en {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 16px;
-            font-weight: 300;
+        .page-1 .subtitle {
+            font-size: 20px;
             font-style: italic;
-            letter-spacing: 0.12em;
-            color: rgba(255, 255, 255, 0.6);
-            text-transform: lowercase;
-            margin-top: 8px;
+            opacity: 0.7;
+            margin-bottom: 60px;
+            letter-spacing: 0.1em;
         }
         
-        .subtitle-cn {
+        .page-1 .description {
             font-size: 13px;
-            letter-spacing: 0.1em;
-            color: rgba(255, 255, 255, 0.5);
-        }
-        
-        .subtitle-en {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 11px;
-            font-weight: 300;
-            font-style: italic;
             letter-spacing: 0.08em;
-            color: rgba(255, 255, 255, 0.4);
-            margin-top: 4px;
-        }
-        
-        /* 正文样式 */
-        .body-text {
-            font-size: 12px;
-            line-height: 2;
-            color: rgba(255, 255, 255, 0.85);
-        }
-        
-        /* 小标题 */
-        .section-title {
-            font-size: 14px;
-            font-weight: 500;
-            letter-spacing: 0.15em;
-            color: #fff;
-            border-bottom: 0.5px solid rgba(255, 255, 255, 0.3);
-            padding-bottom: 4px;
-            display: inline-block;
-            margin-bottom: 10px;
-        }
-        
-        /* 封底文字 */
-        .back-text {
-            font-size: 18px;
-            letter-spacing: 0.15em;
-            color: #fff;
-            line-height: 2.2;
-        }
-        
-        .back-signature {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 12px;
+            opacity: 0.6;
+            line-height: 1.6;
             font-weight: 300;
-            font-style: italic;
-            letter-spacing: 0.1em;
-            color: rgba(255, 255, 255, 0.4);
         }
         
-        /* 页码指示器 */
-        #page-indicator {
-            position: fixed;
-            bottom: 20px;
+        .page-1 .description .en-text {
+            display: block;
+            margin-top: 6px;
+            font-size: 12px;
+            letter-spacing: 0.05em;
+        }
+        
+        /* 第2页（内页左）- 严格约束在边界内 */
+        .page-2 {
+            justify-content: center;
+            align-items: flex-start;
+        }
+        
+        .poem-container {
+            width: 100%;
+            padding: 0 20px;
+        }
+        
+        .poem-line {
+            font-size: 14px;
+            line-height: 1.9;
+            font-weight: 300;
+            margin-bottom: 1.2em;
+            opacity: 0.9;
+            letter-spacing: 0.02em;
+        }
+        
+        .poem-line.indent {
+            text-indent: 2em;
+        }
+        
+        .poem-line.no-indent {
+            text-indent: 0;
+        }
+        
+        /* 第3页（内页右）- 严格约束 */
+        .page-3 {
+            justify-content: space-between;
+            padding-top: 60px;
+            padding-bottom: 60px;
+        }
+        
+        .section {
+            width: 100%;
+        }
+        
+        .section-title {
+            font-size: 12px;
+            letter-spacing: 0.15em;
+            margin-bottom: 0.6em;
+            opacity: 0.6;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 0.4em;
+            display: inline-block;
+            min-width: 80px;
+        }
+        
+        .section-content {
+            font-size: 13px;
+            line-height: 1.8;
+            font-weight: 300;
+            padding-left: 0;
+            opacity: 0.85;
+        }
+        
+        /* 第4页（封底） */
+        .page-4 {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .page-4 .ending-text {
+            font-size: 16px;
+            line-height: 2.2;
+            font-weight: 300;
+            letter-spacing: 0.12em;
+            margin-bottom: 40px;
+        }
+        
+        .page-4 .signature {
+            font-size: 11px;
+            opacity: 0.4;
+            letter-spacing: 0.15em;
+        }
+        
+        /* SVG装饰 - 绝对定位确保不干扰文字流 */
+        .decoration {
+            position: absolute;
+            opacity: 0.12;
+        }
+        
+        .dec-1 {
+            top: 50px;
+            right: 50px;
+            width: 40px;
+            height: 40px;
+        }
+        
+        .dec-2 {
+            bottom: 80px;
+            right: 80px;
+            width: 60px;
+            height: 30px;
+        }
+        
+        .dec-3 {
+            top: 50px;
+            left: 50px;
+            width: 30px;
+            height: 30px;
+        }
+        
+        .dec-4 {
+            bottom: 120px;
             left: 50%;
             transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
-            z-index: 100;
+            width: 80px;
+            height: 1px;
         }
         
-        .dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
-        }
-        
-        .dot.active {
-            background: rgba(255, 255, 255, 0.8);
-        }
-        
-        /* 提示文字 */
-        #hint {
-            position: fixed;
-            bottom: 45px;
+        .hint {
+            position: absolute;
+            bottom: 25px;
             left: 50%;
             transform: translateX(-50%);
-            font-family: 'Cormorant Garamond', serif;
             font-size: 10px;
-            font-style: italic;
-            color: rgba(255, 255, 255, 0.25);
-            letter-spacing: 0.1em;
+            opacity: 0.25;
+            letter-spacing: 0.2em;
+            font-family: 'Playfair Display', serif;
             pointer-events: none;
-            z-index: 100;
+            transition: opacity 0.5s;
         }
         
-        /* ========== 移动端适配 ========== */
-        @media (max-width: 520px) {
-            #text-layer {
-                width: 100vw;
-                height: 100vw;
-                max-width: 500px;
-                max-height: 500px;
+        .card-container:hover .hint {
+            opacity: 0.5;
+        }
+        
+        @media (max-width: 620px) {
+            .card-container {
+                width: 90vmin;
+                height: 90vmin;
             }
             
-            .title-cn {
-                font-size: 32px;
-                letter-spacing: 0.2em;
+            .page {
+                padding: 30px;
             }
             
-            .title-en {
+            .page-1 h1 {
+                font-size: 42px;
+            }
+            
+            .poem-container {
+                padding: 0;
+            }
+            
+            .poem-line {
                 font-size: 13px;
-            }
-            
-            .subtitle-cn {
-                font-size: 11px;
-            }
-            
-            .subtitle-en {
-                font-size: 9px;
-            }
-            
-            .body-text {
-                font-size: 11px;
-                line-height: 1.85;
-            }
-            
-            .section-title {
-                font-size: 12px;
-                margin-bottom: 8px;
-            }
-            
-            .back-text {
-                font-size: 15px;
-            }
-            
-            .back-signature {
-                font-size: 10px;
-            }
-            
-            /* 调整位置 */
-            #p0-title { top: 20%; }
-            #p0-subtitle { top: 46%; }
-            
-            /* 第2页 - 紧凑 */
-            #p1-t1 { top: 10%; }
-            #p1-t2 { top: 24%; width: 78%; }
-            #p1-t3 { top: 42%; width: 78%; }
-            #p1-t4 { top: 58%; width: 78%; }
-            #p1-t5 { top: 74%; width: 84%; }
-            
-            /* 第3页 - 紧凑 */
-            #p2-s1 { top: 10%; width: 78%; }
-            #p2-s2 { top: 36%; width: 78%; }
-            #p2-s3 { top: 62%; width: 78%; }
-            
-            #p3-text { top: 38%; }
-            #p3-sig { top: 58%; }
-        }
-        
-        /* 小屏幕手机 */
-        @media (max-width: 380px) {
-            .title-cn {
-                font-size: 26px;
-            }
-            
-            .title-en {
-                font-size: 11px;
-            }
-            
-            .subtitle-cn {
-                font-size: 10px;
-            }
-            
-            .body-text {
-                font-size: 10px;
-                line-height: 1.75;
-            }
-            
-            .section-title {
-                font-size: 11px;
-                margin-bottom: 6px;
-            }
-            
-            .back-text {
-                font-size: 14px;
-            }
-            
-            /* 更紧凑的位置 */
-            #p0-title { top: 18%; }
-            #p0-subtitle { top: 44%; }
-            
-            /* 第2页 - 紧凑 */
-            #p1-t1 { top: 8%; }
-            #p1-t2 { top: 22%; width: 78%; }
-            #p1-t3 { top: 40%; width: 78%; }
-            #p1-t4 { top: 56%; width: 78%; }
-            #p1-t5 { top: 72%; width: 84%; }
-            
-            /* 第3页 - 紧凑 */
-            #p2-s1 { top: 8%; width: 78%; }
-            #p2-s2 { top: 34%; width: 78%; }
-            #p2-s3 { top: 62%; width: 78%; }
-            
-            #p3-text { top: 36%; }
-            #p3-sig { top: 56%; }
-        }
-        
-        /* 超小屏幕 */
-        @media (max-width: 320px) {
-            .title-cn {
-                font-size: 22px;
-            }
-            
-            .body-text {
-                font-size: 9px;
-                line-height: 1.7;
-            }
-            
-            .section-title {
-                font-size: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <div id="canvas-container">
-        <!-- p5.js canvas 会在这里生成 -->
-        <!-- 文字层 -->
-        <div id="text-layer">
-            <!-- 第1页：封面 -->
-            <div class="page-text" id="page-0">
-                <div class="text-block" id="p0-title">
-                    <div class="title-cn">趋光性</div>
-                    <div class="title-en">Photo taxi</div>
-                </div>
-                
-                <div class="text-block" id="p0-subtitle">
-                    <div class="subtitle-cn">一只笨拙的机器水母</div>
-                    <div class="subtitle-en">a clumsy machine jellyfish</div>
-                </div>
+    <div class="card-container" onclick="nextPage()">
+        <!-- 第 1 页（封面） -->
+        <div class="page page-1 active" data-page="1">
+            <svg class="decoration dec-1" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="0.5">
+                <circle cx="20" cy="20" r="19" stroke-dasharray="2 3"/>
+                <circle cx="20" cy="20" r="12"/>
+            </svg>
+            <h1>趋光性</h1>
+            <div class="subtitle en-text">Photo taxi</div>
+            <div class="description">
+                一只笨拙的机器水母
+                <span class="en-text">a clumsy machine jellyfish</span>
             </div>
-            
-            <!-- 第2页：起源 -->
-            <div class="page-text" id="page-1" style="display: none;">
-                <div class="text-block body-text" id="p1-t1">
-                    <p>它不是为效率而生的。</p>
-                </div>
-                
-                <div class="text-block body-text" id="p1-t2">
-                    <p>万向轮承托着身体，<br>
+        </div>
+        
+        <!-- 第 2 页（内页左 - 起源） -->
+        <div class="page page-2" data-page="2">
+            <svg class="decoration dec-2" viewBox="0 0 60 30" fill="none" stroke="currentColor" stroke-width="0.5">
+                <path d="M5 25 Q 20 5, 35 25 T 55 25" stroke-dasharray="2 2"/>
+                <circle cx="5" cy="25" r="1.5" fill="currentColor"/>
+                <circle cx="55" cy="25" r="1.5" fill="currentColor"/>
+            </svg>
+            <div class="poem-container">
+                <div class="poem-line no-indent">它不是为效率而生的。</div>
+                <div class="poem-line indent">
+                    万向轮承托着身体，<br>
                     方向交给四只不太听话的小脚，<br>
-                    和一个软乎乎的硅胶脑袋。</p>
+                    和一个软乎乎的硅胶脑袋。<br>
+                    当 AI 已经学会最快的捷径，<br>
+                    它却选择贴着墙根摸索。
                 </div>
-                
-                <div class="text-block body-text" id="p1-t3">
-                    <p>当 AI 已经学会最快的捷径，<br>
-                    它却选择贴着墙根摸索。</p>
-                </div>
-                
-                <div class="text-block body-text" id="p1-t4">
-                    <p>它很慢，会迷路，<br>
-                    有时候会在桌腿间趴成一团。</p>
-                </div>
-                
-                <div class="text-block body-text" id="p1-t5">
-                    <p>但当你把它搬到光里，<br>
+                <div class="poem-line indent">
+                    它很慢，会迷路，<br>
+                    有时候会在桌腿间趴成一团。<br>
+                    但当你把它搬到光里，<br>
                     它会用整个身体慢慢亮起来，<br>
-                    像在说：找到了。</p>
-                </div>
-            </div>
-            
-            <!-- 第3页：照料指南 -->
-            <div class="page-text" id="page-2" style="display: none;">
-                <div class="text-block" id="p2-s1">
-                    <div class="section-title">习性</div>
-                    <div class="body-text">
-                        <p>趋光，但不懂直线。<br>
-                        遇到障碍会贴着走，<br>
-                        四只小爪交替挪动，<br>
-                        像只跌跌撞撞的小兽。</p>
-                    </div>
-                </div>
-                
-                <div class="text-block" id="p2-s2">
-                    <div class="section-title">社交</div>
-                    <div class="body-text">
-                        <p>单只时安静呼吸，<br>
-                        两只相遇会交换光信号，<br>
-                        在黑暗里一闪一闪地说话。</p>
-                    </div>
-                </div>
-                
-                <div class="text-block" id="p2-s3">
-                    <div class="section-title">注意</div>
-                    <div class="body-text">
-                        <p>不要修理它的笨拙。<br>
-                        那是它认识世界的方式，<br>
-                        也是它向你求助的借口。</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 第4页：封底 -->
-            <div class="page-text" id="page-3" style="display: none;">
-                <div class="text-block" id="p3-text">
-                    <div class="back-text">
-                        <p>它在找光，</p>
-                        <p>也许也在找你。</p>
-                    </div>
-                </div>
-                
-                <div class="text-block" id="p3-sig">
-                    <div class="back-signature">—— Hackathon 2025</div>
+                    像在说：找到了。
                 </div>
             </div>
         </div>
+        
+        <!-- 第 3 页（内页右 - 照料指南） -->
+        <div class="page page-3" data-page="3">
+            <svg class="decoration dec-3" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="0.5">
+                <path d="M15 3 L18 12 L27 12 L20 18 L22 27 L15 21 L8 27 L10 18 L3 12 L12 12 Z"/>
+            </svg>
+            <div class="section">
+                <div class="section-title">【习性】</div>
+                <div class="section-content">
+                    趋光，但不懂直线。<br>
+                    遇到障碍会贴着走，<br>
+                    四只小爪交替挪动，<br>
+                    像只跌跌撞撞的小兽。
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">【社交】</div>
+                <div class="section-content">
+                    单只时安静呼吸，<br>
+                    两只相遇会交换光信号，<br>
+                    在黑暗里一闪一闪地说话。
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">【注意】</div>
+                <div class="section-content">
+                    不要修理它的笨拙。<br>
+                    那是它认识世界的方式，<br>
+                    也是它向你求助的借口。
+                </div>
+            </div>
+        </div>
+        
+        <!-- 第 4 页（封底） -->
+        <div class="page page-4" data-page="4">
+            <svg class="decoration dec-4" viewBox="0 0 80 1" fill="none" stroke="currentColor" stroke-width="0.5">
+                <line x1="0" y1="0.5" x2="80" y2="0.5" stroke-dasharray="1 2"/>
+            </svg>
+            <div class="ending-text">
+                它在找光，<br>
+                也许也在找你。
+            </div>
+            
+            <div class="signature en-text">—— Hackathon 2025</div>
+        </div>
+        
+        <div class="hint">CLICK TO TURN</div>
     </div>
     
-    <div id="hint">点击翻页 · Click to turn</div>
-    
-    <div id="page-indicator">
-        <div class="dot active" data-page="0"></div>
-        <div class="dot" data-page="1"></div>
-        <div class="dot" data-page="2"></div>
-        <div class="dot" data-page="3"></div>
-    </div>
-    
-    <script src="sketch.js"></script>
+    <script>
+        let currentPage = 1;
+        const totalPages = 4;
+        
+        function nextPage() {
+            document.querySelector(`.page[data-page="${currentPage}"]`).classList.remove('active');
+            currentPage = currentPage >= totalPages ? 1 : currentPage + 1;
+            setTimeout(() => {
+                document.querySelector(`.page[data-page="${currentPage}"]`).classList.add('active');
+            }, 50);
+        }
+    </script>
 </body>
 </html>
