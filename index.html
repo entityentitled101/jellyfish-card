@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="趋光性 Photo taxi - 一只笨拙的机器水母">
+    <title>趋光性 | Photo taxi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="card-container">
+        <!-- 折叠卡片主体 -->
+        <div class="card">
+            <!-- 第1页：封面 -->
+            <div class="page page-cover">
+                <div class="page-border">
+                    <div class="page-content center-content">
+                        <h1 class="main-title">
+                            <span class="title-cn">趋光性</span>
+                            <span class="title-en">Photo taxi</span>
+                        </h1>
+                        <p class="subtitle">
+                            <span class="subtitle-cn">一只笨拙的机器水母</span>
+                            <span class="subtitle-en">a clumsy machine jellyfish</span>
+                        </p>
+                        <!-- 装饰性 SVG：水母轮廓 -->
+                        <svg class="decoration-svg cover-decoration" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <path class="jellyfish-body" d="M100 40 Q130 40 145 65 Q155 85 145 105 Q130 125 100 125 Q70 125 55 105 Q45 85 55 65 Q70 40 100 40" fill="none" stroke="currentColor" stroke-width="0.5"/>
+                            <path class="jellyfish-tentacle" d="M75 115 Q75 145 70 165" fill="none" stroke="currentColor" stroke-width="0.3"/>
+                            <path class="jellyfish-tentacle" d="M90 120 Q90 150 88 170" fill="none" stroke="currentColor" stroke-width="0.3"/>
+                            <path class="jellyfish-tentacle" d="M110 120 Q110 150 112 170" fill="none" stroke="currentColor" stroke-width="0.3"/>
+                            <path class="jellyfish-tentacle" d="M125 115 Q125 145 130 165" fill="none" stroke="currentColor" stroke-width="0.3"/>
+                            <circle class="jellyfish-glow" cx="100" cy="75" r="3" fill="none" stroke="currentColor" stroke-width="0.3"/>
+                            <circle class="jellyfish-glow" cx="100" cy="75" r="8" fill="none" stroke="currentColor" stroke-width="0.2" opacity="0.5"/>
+                            <circle class="jellyfish-glow" cx="100" cy="75" r="14" fill="none" stroke="currentColor" stroke-width="0.15" opacity="0.3"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第2页：内页左 - 起源 -->
+            <div class="page page-left">
+                <div class="page-border">
+                    <div class="page-content origin-content">
+                        <div class="origin-text">
+                            <p>它不是为效率而生的。</p>
+                            <p>万向轮承托着身体，<br>
+                            方向交给四只不太听话的小脚，<br>
+                            和一个软乎乎的硅胶脑袋。</p>
+                            <p>当 AI 已经学会最快的捷径，<br>
+                            它却选择贴着墙根摸索。</p>
+                            <p>它很慢，会迷路，<br>
+                            有时候会在桌腿间趴成一团。</p>
+                            <p>但当你把它搬到光里，<br>
+                            它会用整个身体慢慢亮起来，<br>
+                            像在说：找到了。</p>
+                        </div>
+                        <!-- 装饰性 SVG：小脚 -->
+                        <svg class="decoration-svg origin-decoration" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+                            <ellipse cx="20" cy="45" rx="8" ry="5" fill="none" stroke="currentColor" stroke-width="0.4"/>
+                            <ellipse cx="40" cy="48" rx="8" ry="5" fill="none" stroke="currentColor" stroke-width="0.4"/>
+                            <ellipse cx="60" cy="46" rx="8" ry="5" fill="none" stroke="currentColor" stroke-width="0.4"/>
+                            <ellipse cx="80" cy="44" rx="8" ry="5" fill="none" stroke="currentColor" stroke-width="0.4"/>
+                            <path d="M20 40 Q25 25 30 20" fill="none" stroke="currentColor" stroke-width="0.3"/>
+                            <path d="M40 43 Q42 28 45 22" fill="none" stroke="currentColor" stroke-width="0.3"/>
+                            <path d="M60 41 Q58 26 55 20" fill="none" stroke="currentColor" stroke-width="0.3"/>
+                            <path d="M80 39 Q75 24 70 18" fill="none" stroke="currentColor" stroke-width="0.3"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第3页：内页右 - 照料指南 -->
+            <div class="page page-right">
+                <div class="page-border">
+                    <div class="page-content care-content">
+                        <div class="care-section">
+                            <h2 class="section-title">习性</h2>
+                            <p>趋光，但不懂直线。<br>
+                            遇到障碍会贴着走，<br>
+                            四只小爪交替挪动，<br>
+                            像只跌跌撞撞的小兽。</p>
+                        </div>
+                        <div class="care-section">
+                            <h2 class="section-title">社交</h2>
+                            <p>单只时安静呼吸，<br>
+                            两只相遇会交换光信号，<br>
+                            在黑暗里一闪一闪地说话。</p>
+                        </div>
+                        <div class="care-section">
+                            <h2 class="section-title">注意</h2>
+                            <p>不要修理它的笨拙。<br>
+                            那是它认识世界的方式，<br>
+                            也是它向你求助的借口。</p>
+                        </div>
+                        <!-- 装饰性 SVG：光信号 -->
+                        <svg class="decoration-svg care-decoration" viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="30" cy="40" r="4" fill="none" stroke="currentColor" stroke-width="0.4"/>
+                            <circle cx="30" cy="40" r="10" fill="none" stroke="currentColor" stroke-width="0.2" opacity="0.6"/>
+                            <circle cx="30" cy="40" r="16" fill="none" stroke="currentColor" stroke-width="0.15" opacity="0.4"/>
+                            <circle cx="90" cy="40" r="4" fill="none" stroke="currentColor" stroke-width="0.4"/>
+                            <circle cx="90" cy="40" r="10" fill="none" stroke="currentColor" stroke-width="0.2" opacity="0.6"/>
+                            <circle cx="90" cy="40" r="16" fill="none" stroke="currentColor" stroke-width="0.15" opacity="0.4"/>
+                            <path d="M46 40 Q60 30 74 40" fill="none" stroke="currentColor" stroke-width="0.3" stroke-dasharray="3 2"/>
+                            <path d="M46 40 Q60 50 74 40" fill="none" stroke="currentColor" stroke-width="0.3" stroke-dasharray="3 2" opacity="0.6"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第4页：封底 -->
+            <div class="page page-back">
+                <div class="page-border">
+                    <div class="page-content center-content">
+                        <div class="back-text">
+                            <p class="back-line">它在找光，</p>
+                            <p class="back-line">也许也在找你。</p>
+                        </div>
+                        <p class="back-signature">—— Hackathon 2025</p>
+                        <!-- 装饰性 SVG：光点 -->
+                        <svg class="decoration-svg back-decoration" viewBox="0 0 150 100" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="75" cy="50" r="2" fill="none" stroke="currentColor" stroke-width="0.4"/>
+                            <circle cx="75" cy="50" r="8" fill="none" stroke="currentColor" stroke-width="0.2" opacity="0.7"/>
+                            <circle cx="75" cy="50" r="15" fill="none" stroke="currentColor" stroke-width="0.15" opacity="0.5"/>
+                            <circle cx="75" cy="50" r="25" fill="none" stroke="currentColor" stroke-width="0.1" opacity="0.3"/>
+                            <line x1="75" y1="20" x2="75" y2="80" stroke="currentColor" stroke-width="0.15" opacity="0.4"/>
+                            <line x1="45" y1="50" x2="105" y2="50" stroke="currentColor" stroke-width="0.15" opacity="0.4"/>
+                            <line x1="54" y1="29" x2="96" y2="71" stroke="currentColor" stroke-width="0.15" opacity="0.3"/>
+                            <line x1="96" y1="29" x2="54" y2="71" stroke="currentColor" stroke-width="0.15" opacity="0.3"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
