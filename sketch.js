@@ -1,5 +1,5 @@
 // 趋光性 - 机器水母产品卡
-// p5.js 版本 - iOS Safari 兼容
+// 简化版本 - 直接使用 DOM 事件
 
 let canvasSize = 500;
 let currentPage = 0;
@@ -13,64 +13,39 @@ function setup() {
     
     let canvas = createCanvas(canvasSize, canvasSize);
     canvas.parent('canvas-container');
-    canvas.style('display', 'block');
     
-    // iOS Safari 需要特殊处理触摸事件
-    setupTouchEvents(canvas.elt);
-    
-    // 窗口大小改变时重新计算
+    // 窗口大小改变
     window.addEventListener('resize', () => {
         calculateCanvasSize();
         resizeCanvas(canvasSize, canvasSize);
     });
+    
+    // 使用全局点击事件（不依赖 p5.js）
+    setupGlobalClickHandler();
 }
 
-function setupTouchEvents(canvasElement) {
-    // 禁用默认触摸行为（iOS Safari 会阻止点击）
-    canvasElement.style.touchAction = 'none';
+function setupGlobalClickHandler() {
+    // 获取 canvas 容器
+    const container = document.getElementById('canvas-container');
     
-    // 使用 pointer 事件（iOS 13+ 支持）
-    canvasElement.addEventListener('pointerdown', handlePointerDown, { passive: false });
-    
-    // 备用：传统的触摸事件
-    canvasElement.addEventListener('touchstart', handleTouchStart, { passive: false });
-    canvasElement.addEventListener('touchend', handleTouchEnd, { passive: false });
-    
-    // 点击事件（桌面端）
-    canvasElement.addEventListener('click', handleClickEvent);
-}
-
-function handlePointerDown(e) {
-    e.preventDefault();
-    handlePress();
-}
-
-let touchStartTime = 0;
-let touchStartX = 0;
-let touchStartY = 0;
-
-function handleTouchStart(e) {
-    touchStartTime = Date.now();
-    if (e.touches.length > 0) {
-        touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
-    }
-}
-
-function handleTouchEnd(e) {
-    e.preventDefault();
-    
-    let touchDuration = Date.now() - touchStartTime;
-    
-    // 快速触摸（小于 300ms）视为点击
-    if (touchDuration < 300) {
+    // 使用原生事件监听
+    container.addEventListener('click', (e) => {
+        e.preventDefault();
         handlePress();
-    }
-}
-
-function handleClickEvent(e) {
-    e.preventDefault();
-    handlePress();
+    });
+    
+    // iOS Safari 需要 touch 事件
+    container.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        handlePress();
+    }, { passive: false });
+    
+    // 防止双击缩放
+    container.addEventListener('touchstart', (e) => {
+        if (e.touches.length > 1) {
+            e.preventDefault();
+        }
+    }, { passive: false });
 }
 
 function calculateCanvasSize() {
@@ -335,14 +310,9 @@ function updatePageIndicator() {
     });
 }
 
-// p5.js 内置事件（作为备用）
-function mousePressed() {
-    return false;
-}
-
-function touchStarted() {
-    return false;
-}
+// 禁用 p5.js 默认鼠标/触摸事件
+function mousePressed() { return false; }
+function touchStarted() { return false; }
 
 // 键盘支持
 function keyPressed() {
