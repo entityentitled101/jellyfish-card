@@ -87,17 +87,52 @@
             text-align: center;
         }
         
-        /* ========== 第2页：起源 ========== */
-        #p1-t1 { top: 18%; left: 12%; }
-        #p1-t2 { top: 30%; left: 12%; }
-        #p1-t3 { top: 50%; left: 12%; }
-        #p1-t4 { top: 66%; left: 12%; }
-        #p1-t5 { top: 82%; left: 12%; }
+        /* ========== 第2页：起源 - 左右穿插排版 ========== */
+        #p1-t1 { 
+            top: 16%; 
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+        #p1-t2 { 
+            top: 30%; 
+            left: 14%;
+            width: 72%;
+        }
+        #p1-t3 { 
+            top: 48%; 
+            left: 14%;
+            width: 72%;
+        }
+        #p1-t4 { 
+            top: 64%; 
+            left: 14%;
+            width: 72%;
+        }
+        #p1-t5 { 
+            top: 80%; 
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            width: 80%;
+        }
         
-        /* ========== 第3页：照料指南 ========== */
-        #p2-s1 { top: 15%; left: 12%; }
-        #p2-s2 { top: 44%; left: 12%; }
-        #p2-s3 { top: 73%; left: 12%; }
+        /* ========== 第3页：照料指南 - 左右穿插排版 ========== */
+        #p2-s1 { 
+            top: 14%; 
+            left: 14%;
+            width: 72%;
+        }
+        #p2-s2 { 
+            top: 42%; 
+            left: 14%;
+            width: 72%;
+        }
+        #p2-s3 { 
+            top: 72%; 
+            left: 14%;
+            width: 72%;
+        }
         
         /* ========== 第4页：封底 ========== */
         #p3-text {
@@ -271,15 +306,17 @@
             #p0-title { top: 20%; }
             #p0-subtitle { top: 46%; }
             
-            #p1-t1 { top: 16%; }
-            #p1-t2 { top: 28%; }
-            #p1-t3 { top: 48%; }
-            #p1-t4 { top: 64%; }
-            #p1-t5 { top: 80%; }
+            /* 第2页 - 紧凑 */
+            #p1-t1 { top: 14%; }
+            #p1-t2 { top: 28%; width: 78%; }
+            #p1-t3 { top: 46%; width: 78%; }
+            #p1-t4 { top: 62%; width: 78%; }
+            #p1-t5 { top: 78%; width: 84%; }
             
-            #p2-s1 { top: 14%; }
-            #p2-s2 { top: 42%; }
-            #p2-s3 { top: 70%; }
+            /* 第3页 - 紧凑 */
+            #p2-s1 { top: 12%; width: 78%; }
+            #p2-s2 { top: 40%; width: 78%; }
+            #p2-s3 { top: 70%; width: 78%; }
             
             #p3-text { top: 38%; }
             #p3-sig { top: 58%; }
@@ -317,15 +354,17 @@
             #p0-title { top: 18%; }
             #p0-subtitle { top: 44%; }
             
-            #p1-t1 { top: 14%; }
-            #p1-t2 { top: 26%; }
-            #p1-t3 { top: 46%; }
-            #p1-t4 { top: 62%; }
-            #p1-t5 { top: 78%; }
+            /* 第2页 - 紧凑 */
+            #p1-t1 { top: 12%; }
+            #p1-t2 { top: 26%; width: 78%; }
+            #p1-t3 { top: 44%; width: 78%; }
+            #p1-t4 { top: 60%; width: 78%; }
+            #p1-t5 { top: 76%; width: 84%; }
             
-            #p2-s1 { top: 12%; }
-            #p2-s2 { top: 40%; }
-            #p2-s3 { top: 68%; }
+            /* 第3页 - 紧凑 */
+            #p2-s1 { top: 10%; width: 78%; }
+            #p2-s2 { top: 38%; width: 78%; }
+            #p2-s3 { top: 68%; width: 78%; }
             
             #p3-text { top: 36%; }
             #p3-sig { top: 56%; }
