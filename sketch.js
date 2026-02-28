@@ -1,5 +1,5 @@
 // 趋光性 - 机器水母产品卡
-// p5.js 版本 - 简化的移动端适配
+// p5.js 版本 - iOS Safari 兼容
 
 let canvasSize = 500;
 let currentPage = 0;
@@ -9,16 +9,14 @@ let isTransitioning = false;
 let jellyfishPulse = 0;
 
 function setup() {
-    // 计算画布大小
     calculateCanvasSize();
     
     let canvas = createCanvas(canvasSize, canvasSize);
     canvas.parent('canvas-container');
     canvas.style('display', 'block');
     
-    // 禁用默认触摸行为
-    canvas.elt.addEventListener('touchstart', preventDefaultTouch, { passive: false });
-    canvas.elt.addEventListener('touchmove', preventDefaultTouch, { passive: false });
+    // iOS Safari 需要特殊处理触摸事件
+    setupTouchEvents(canvas.elt);
     
     // 窗口大小改变时重新计算
     window.addEventListener('resize', () => {
@@ -27,19 +25,61 @@ function setup() {
     });
 }
 
-function preventDefaultTouch(e) {
+function setupTouchEvents(canvasElement) {
+    // 禁用默认触摸行为（iOS Safari 会阻止点击）
+    canvasElement.style.touchAction = 'none';
+    
+    // 使用 pointer 事件（iOS 13+ 支持）
+    canvasElement.addEventListener('pointerdown', handlePointerDown, { passive: false });
+    
+    // 备用：传统的触摸事件
+    canvasElement.addEventListener('touchstart', handleTouchStart, { passive: false });
+    canvasElement.addEventListener('touchend', handleTouchEnd, { passive: false });
+    
+    // 点击事件（桌面端）
+    canvasElement.addEventListener('click', handleClickEvent);
+}
+
+function handlePointerDown(e) {
     e.preventDefault();
+    handlePress();
+}
+
+let touchStartTime = 0;
+let touchStartX = 0;
+let touchStartY = 0;
+
+function handleTouchStart(e) {
+    touchStartTime = Date.now();
+    if (e.touches.length > 0) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    }
+}
+
+function handleTouchEnd(e) {
+    e.preventDefault();
+    
+    let touchDuration = Date.now() - touchStartTime;
+    
+    // 快速触摸（小于 300ms）视为点击
+    if (touchDuration < 300) {
+        handlePress();
+    }
+}
+
+function handleClickEvent(e) {
+    e.preventDefault();
+    handlePress();
 }
 
 function calculateCanvasSize() {
     let w = window.innerWidth;
     let h = window.innerHeight;
     
-    // 留出边距
     let availableHeight = h - 80;
     let availableWidth = w - 40;
     
-    // 画布为正方形
     canvasSize = Math.min(availableWidth, availableHeight, 500);
     canvasSize = Math.max(canvasSize, 280);
 }
@@ -49,7 +89,6 @@ function draw() {
     
     push();
     
-    // 页面切换动画
     if (isTransitioning) {
         pageTransition += 0.08;
         if (pageTransition >= 1) {
@@ -61,10 +100,8 @@ function draw() {
         }
     }
     
-    // 绘制页面内容
     drawPage(currentPage);
     
-    // 绘制切换动画
     if (isTransitioning) {
         drawTransition();
     }
@@ -75,7 +112,6 @@ function draw() {
 }
 
 function drawPage(page) {
-    // 绘制细线边框
     noFill();
     stroke(255, 100);
     strokeWeight(0.5);
@@ -91,7 +127,6 @@ function drawPage(page) {
     }
 }
 
-// 第1页：封面装饰
 function drawCoverDecoration() {
     push();
     translate(canvasSize / 2, canvasSize * 0.72);
@@ -100,10 +135,9 @@ function drawCoverDecoration() {
     stroke(255, 120);
     strokeWeight(0.5);
     
-    let scale = canvasSize / 500;
-    scale(scale);
+    let s = canvasSize / 500;
+    scale(s);
     
-    // 水母身体
     beginShape();
     vertex(-50, -30);
     bezierVertex(-50, -60, 50, -60, 50, -30);
@@ -111,7 +145,6 @@ function drawCoverDecoration() {
     bezierVertex(-30, 15, -50, 0, -50, -30);
     endShape();
     
-    // 触手
     stroke(255, 80);
     strokeWeight(0.3);
     
@@ -123,7 +156,6 @@ function drawCoverDecoration() {
         endShape();
     }
     
-    // 发光核心
     let pulse = sin(jellyfishPulse) * 0.3 + 0.7;
     
     stroke(255, 100 * pulse);
@@ -141,13 +173,11 @@ function drawCoverDecoration() {
     pop();
 }
 
-// 第2页：起源装饰
 function drawOriginDecoration() {
     push();
-    
-    let scale = canvasSize / 500;
+    let s = canvasSize / 500;
     translate(canvasSize * 0.75, canvasSize * 0.82);
-    scale(scale * 0.7);
+    scale(s * 0.7);
     
     noFill();
     stroke(255, 60);
@@ -168,17 +198,14 @@ function drawOriginDecoration() {
         endShape();
         pop();
     }
-    
     pop();
 }
 
-// 第3页：照料指南装饰
 function drawCareDecoration() {
     push();
-    
-    let scale = canvasSize / 500;
+    let s = canvasSize / 500;
     translate(canvasSize * 0.78, canvasSize * 0.18);
-    scale(scale * 0.6);
+    scale(s * 0.6);
     
     noFill();
     
@@ -206,7 +233,6 @@ function drawCareDecoration() {
     strokeWeight(0.3);
     
     drawingContext.setLineDash([4, 3]);
-    noFill();
     beginShape();
     for (let a = 0; a <= PI; a += 0.1) {
         let x = map(a, 0, PI, x1 + 8, x2 - 8);
@@ -224,17 +250,14 @@ function drawCareDecoration() {
     endShape();
     
     drawingContext.setLineDash([]);
-    
     pop();
 }
 
-// 第4页：封底装饰
 function drawBackDecoration() {
     push();
-    
-    let scale = canvasSize / 500;
+    let s = canvasSize / 500;
     translate(canvasSize / 2, canvasSize * 0.72);
-    scale(scale);
+    scale(s);
     
     noFill();
     
@@ -265,7 +288,6 @@ function drawBackDecoration() {
         let r2 = 55;
         line(cos(angle) * r1, sin(angle) * r1, cos(angle) * r2, sin(angle) * r2);
     }
-    
     pop();
 }
 
@@ -280,27 +302,6 @@ function drawTransition() {
     fill(10, fadeAlpha * 0.3);
     rect(0, 0, canvasSize, canvasSize);
     pop();
-}
-
-// 处理点击/触摸
-function mousePressed() {
-    if (mouseX >= 0 && mouseX <= canvasSize && mouseY >= 0 && mouseY <= canvasSize) {
-        handlePress();
-    }
-    return false;
-}
-
-function touchStarted() {
-    if (touches.length > 0) {
-        let canvasRect = canvas.elt.getBoundingClientRect();
-        let tx = touches[0].x - canvasRect.left;
-        let ty = touches[0].y - canvasRect.top;
-        
-        if (tx >= 0 && tx <= canvasSize && ty >= 0 && ty <= canvasSize) {
-            handlePress();
-        }
-    }
-    return false;
 }
 
 function handlePress() {
@@ -332,6 +333,15 @@ function updatePageIndicator() {
     document.querySelectorAll('.dot').forEach((dot, index) => {
         dot.classList.toggle('active', index === currentPage);
     });
+}
+
+// p5.js 内置事件（作为备用）
+function mousePressed() {
+    return false;
+}
+
+function touchStarted() {
+    return false;
 }
 
 // 键盘支持
