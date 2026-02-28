@@ -41,13 +41,24 @@
             align-items: center;
         }
         
-        /* 文字层 - 绝对定位在 canvas 上方 */
+        /* 文字层 */
         #text-layer {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             pointer-events: none;
+            width: 500px;
+            height: 500px;
+        }
+        
+        /* 页面文字容器 */
+        .page-text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
         
         /* 文字块 - 隐形容器 */
@@ -63,9 +74,51 @@
             margin: 0;
         }
         
-        /* 标题样式 - 基础 */
+        /* ========== 第1页：封面 ========== */
+        #p0-title {
+            top: 28%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+        
+        #p0-subtitle {
+            top: 44%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+        
+        /* ========== 第2页：起源 ========== */
+        #p1-t1 { top: 18%; left: 12%; }
+        #p1-t2 { top: 30%; left: 12%; }
+        #p1-t3 { top: 50%; left: 12%; }
+        #p1-t4 { top: 66%; left: 12%; }
+        #p1-t5 { top: 82%; left: 12%; }
+        
+        /* ========== 第3页：照料指南 ========== */
+        #p2-s1 { top: 15%; left: 12%; }
+        #p2-s2 { top: 44%; left: 12%; }
+        #p2-s3 { top: 73%; left: 12%; }
+        
+        /* ========== 第4页：封底 ========== */
+        #p3-text {
+            top: 40%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+        
+        #p3-sig {
+            top: 60%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+        
+        /* 标题样式 */
         .title-cn {
-            font-size: 36px;
+            font-size: 42px;
             font-weight: 400;
             letter-spacing: 0.25em;
             color: #fff;
@@ -73,59 +126,61 @@
         
         .title-en {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 300;
             font-style: italic;
             letter-spacing: 0.12em;
             color: rgba(255, 255, 255, 0.6);
             text-transform: lowercase;
+            margin-top: 8px;
         }
         
         .subtitle-cn {
-            font-size: 12px;
+            font-size: 13px;
             letter-spacing: 0.1em;
             color: rgba(255, 255, 255, 0.5);
         }
         
         .subtitle-en {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 300;
             font-style: italic;
             letter-spacing: 0.08em;
             color: rgba(255, 255, 255, 0.4);
+            margin-top: 4px;
         }
         
-        /* 正文样式 - 基础 */
+        /* 正文样式 */
         .body-text {
-            font-size: 11px;
-            line-height: 1.9;
+            font-size: 12px;
+            line-height: 2;
             color: rgba(255, 255, 255, 0.85);
         }
         
         /* 小标题 */
         .section-title {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 500;
             letter-spacing: 0.15em;
             color: #fff;
             border-bottom: 0.5px solid rgba(255, 255, 255, 0.3);
-            padding-bottom: 3px;
+            padding-bottom: 4px;
             display: inline-block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
         
         /* 封底文字 */
         .back-text {
-            font-size: 16px;
+            font-size: 18px;
             letter-spacing: 0.15em;
             color: #fff;
-            line-height: 2;
+            line-height: 2.2;
         }
         
         .back-signature {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 300;
             font-style: italic;
             letter-spacing: 0.1em;
@@ -170,28 +225,26 @@
             z-index: 100;
         }
         
-        /* 页面文字容器 */
-        .page-text {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        
         /* ========== 移动端适配 ========== */
-        @media (max-width: 400px) {
+        @media (max-width: 520px) {
+            #text-layer {
+                width: 100vw;
+                height: 100vw;
+                max-width: 500px;
+                max-height: 500px;
+            }
+            
             .title-cn {
-                font-size: 28px;
+                font-size: 32px;
                 letter-spacing: 0.2em;
             }
             
             .title-en {
-                font-size: 12px;
+                font-size: 13px;
             }
             
             .subtitle-cn {
-                font-size: 10px;
+                font-size: 11px;
             }
             
             .subtitle-en {
@@ -199,8 +252,58 @@
             }
             
             .body-text {
+                font-size: 11px;
+                line-height: 1.85;
+            }
+            
+            .section-title {
+                font-size: 12px;
+                margin-bottom: 8px;
+            }
+            
+            .back-text {
+                font-size: 15px;
+            }
+            
+            .back-signature {
                 font-size: 10px;
-                line-height: 1.8;
+            }
+            
+            /* 调整位置 */
+            #p0-title { top: 26%; }
+            #p0-subtitle { top: 42%; }
+            
+            #p1-t1 { top: 16%; }
+            #p1-t2 { top: 28%; }
+            #p1-t3 { top: 48%; }
+            #p1-t4 { top: 64%; }
+            #p1-t5 { top: 80%; }
+            
+            #p2-s1 { top: 14%; }
+            #p2-s2 { top: 42%; }
+            #p2-s3 { top: 70%; }
+            
+            #p3-text { top: 38%; }
+            #p3-sig { top: 58%; }
+        }
+        
+        /* 小屏幕手机 */
+        @media (max-width: 380px) {
+            .title-cn {
+                font-size: 26px;
+            }
+            
+            .title-en {
+                font-size: 11px;
+            }
+            
+            .subtitle-cn {
+                font-size: 10px;
+            }
+            
+            .body-text {
+                font-size: 10px;
+                line-height: 1.75;
             }
             
             .section-title {
@@ -212,15 +315,28 @@
                 font-size: 14px;
             }
             
-            .back-signature {
-                font-size: 10px;
-            }
+            /* 更紧凑的位置 */
+            #p0-title { top: 24%; }
+            #p0-subtitle { top: 40%; }
+            
+            #p1-t1 { top: 14%; }
+            #p1-t2 { top: 26%; }
+            #p1-t3 { top: 46%; }
+            #p1-t4 { top: 62%; }
+            #p1-t5 { top: 78%; }
+            
+            #p2-s1 { top: 12%; }
+            #p2-s2 { top: 40%; }
+            #p2-s3 { top: 68%; }
+            
+            #p3-text { top: 36%; }
+            #p3-sig { top: 56%; }
         }
         
         /* 超小屏幕 */
-        @media (max-width: 350px) {
+        @media (max-width: 320px) {
             .title-cn {
-                font-size: 24px;
+                font-size: 22px;
             }
             
             .body-text {
@@ -230,43 +346,6 @@
             
             .section-title {
                 font-size: 10px;
-            }
-        }
-        
-        /* 平板 */
-        @media (min-width: 768px) {
-            .title-cn {
-                font-size: 42px;
-            }
-            
-            .title-en {
-                font-size: 16px;
-            }
-            
-            .subtitle-cn {
-                font-size: 13px;
-            }
-            
-            .subtitle-en {
-                font-size: 11px;
-            }
-            
-            .body-text {
-                font-size: 12px;
-                line-height: 2;
-            }
-            
-            .section-title {
-                font-size: 14px;
-                margin-bottom: 10px;
-            }
-            
-            .back-text {
-                font-size: 18px;
-            }
-            
-            .back-signature {
-                font-size: 12px;
             }
         }
     </style>

@@ -1,24 +1,14 @@
 // 趋光性 - 机器水母产品卡
-// p5.js 版本 - 完整的移动端适配
+// p5.js 版本 - 简化的移动端适配
 
 let canvasSize = 500;
 let currentPage = 0;
 const totalPages = 4;
 let pageTransition = 0;
 let isTransitioning = false;
-
-// 动画参数
 let jellyfishPulse = 0;
 
-// 设备类型
-let isMobile = false;
-let isTablet = false;
-let isSmallMobile = false;
-
 function setup() {
-    // 检测设备类型
-    detectDevice();
-    
     // 计算画布大小
     calculateCanvasSize();
     
@@ -30,18 +20,10 @@ function setup() {
     canvas.elt.addEventListener('touchstart', preventDefaultTouch, { passive: false });
     canvas.elt.addEventListener('touchmove', preventDefaultTouch, { passive: false });
     
-    // 初始化文字位置
-    updateTextPositions();
-    
-    // 绑定点击事件 - 同时支持鼠标和触摸
-    canvas.mousePressed(handlePress);
-    
     // 窗口大小改变时重新计算
     window.addEventListener('resize', () => {
-        detectDevice();
         calculateCanvasSize();
         resizeCanvas(canvasSize, canvasSize);
-        updateTextPositions();
     });
 }
 
@@ -49,167 +31,17 @@ function preventDefaultTouch(e) {
     e.preventDefault();
 }
 
-function detectDevice() {
-    let w = window.innerWidth;
-    let h = window.innerHeight;
-    
-    isSmallMobile = w <= 350;
-    isMobile = w <= 768 || (w <= 900 && h > w);
-    isTablet = w > 768 && w <= 1024;
-}
-
 function calculateCanvasSize() {
     let w = window.innerWidth;
     let h = window.innerHeight;
     
-    // 留出边距给页码指示器
+    // 留出边距
     let availableHeight = h - 80;
     let availableWidth = w - 40;
     
-    // 画布为正方形，取较小值
+    // 画布为正方形
     canvasSize = Math.min(availableWidth, availableHeight, 500);
-    
-    // 确保最小尺寸
     canvasSize = Math.max(canvasSize, 280);
-}
-
-function updateTextPositions() {
-    const textLayer = document.getElementById('text-layer');
-    if (!textLayer) return;
-    
-    textLayer.style.width = canvasSize + 'px';
-    textLayer.style.height = canvasSize + 'px';
-    
-    // 根据设备类型调整文字位置
-    if (isSmallMobile) {
-        setSmallMobilePositions();
-    } else if (isMobile) {
-        setMobilePositions();
-    } else if (isTablet) {
-        setTabletPositions();
-    } else {
-        setDesktopPositions();
-    }
-}
-
-// 超小屏幕位置设置
-function setSmallMobilePositions() {
-    const margin = canvasSize * 0.1;
-    const centerX = canvasSize / 2;
-    
-    // 第1页
-    setPos('p0-title', centerX, canvasSize * 0.25, 'center');
-    setPos('p0-subtitle', centerX, canvasSize * 0.42, 'center');
-    
-    // 第2页 - 紧凑排列
-    setPos('p1-t1', margin, canvasSize * 0.14, 'left');
-    setPos('p1-t2', margin, canvasSize * 0.24, 'left');
-    setPos('p1-t3', margin, canvasSize * 0.46, 'left');
-    setPos('p1-t4', margin, canvasSize * 0.62, 'left');
-    setPos('p1-t5', margin, canvasSize * 0.78, 'left');
-    
-    // 第3页
-    setPos('p2-s1', margin, canvasSize * 0.12, 'left');
-    setPos('p2-s2', margin, canvasSize * 0.40, 'left');
-    setPos('p2-s3', margin, canvasSize * 0.68, 'left');
-    
-    // 第4页
-    setPos('p3-text', centerX, canvasSize * 0.40, 'center');
-    setPos('p3-sig', centerX, canvasSize * 0.60, 'center');
-}
-
-// 手机屏幕位置设置
-function setMobilePositions() {
-    const margin = canvasSize * 0.1;
-    const centerX = canvasSize / 2;
-    
-    // 第1页
-    setPos('p0-title', centerX, canvasSize * 0.26, 'center');
-    setPos('p0-subtitle', centerX, canvasSize * 0.40, 'center');
-    
-    // 第2页
-    setPos('p1-t1', margin, canvasSize * 0.14, 'left');
-    setPos('p1-t2', margin, canvasSize * 0.24, 'left');
-    setPos('p1-t3', margin, canvasSize * 0.46, 'left');
-    setPos('p1-t4', margin, canvasSize * 0.62, 'left');
-    setPos('p1-t5', margin, canvasSize * 0.78, 'left');
-    
-    // 第3页
-    setPos('p2-s1', margin, canvasSize * 0.12, 'left');
-    setPos('p2-s2', margin, canvasSize * 0.40, 'left');
-    setPos('p2-s3', margin, canvasSize * 0.68, 'left');
-    
-    // 第4页
-    setPos('p3-text', centerX, canvasSize * 0.40, 'center');
-    setPos('p3-sig', centerX, canvasSize * 0.60, 'center');
-}
-
-// 平板位置设置
-function setTabletPositions() {
-    const margin = canvasSize * 0.12;
-    const centerX = canvasSize / 2;
-    
-    // 第1页
-    setPos('p0-title', centerX, canvasSize * 0.28, 'center');
-    setPos('p0-subtitle', centerX, canvasSize * 0.42, 'center');
-    
-    // 第2页
-    setPos('p1-t1', margin, canvasSize * 0.16, 'left');
-    setPos('p1-t2', margin, canvasSize * 0.28, 'left');
-    setPos('p1-t3', margin, canvasSize * 0.48, 'left');
-    setPos('p1-t4', margin, canvasSize * 0.64, 'left');
-    setPos('p1-t5', margin, canvasSize * 0.80, 'left');
-    
-    // 第3页
-    setPos('p2-s1', margin, canvasSize * 0.14, 'left');
-    setPos('p2-s2', margin, canvasSize * 0.42, 'left');
-    setPos('p2-s3', margin, canvasSize * 0.70, 'left');
-    
-    // 第4页
-    setPos('p3-text', centerX, canvasSize * 0.40, 'center');
-    setPos('p3-sig', centerX, canvasSize * 0.60, 'center');
-}
-
-// 桌面位置设置
-function setDesktopPositions() {
-    const margin = canvasSize * 0.12;
-    const centerX = canvasSize / 2;
-    
-    // 第1页
-    setPos('p0-title', centerX, canvasSize * 0.28, 'center');
-    setPos('p0-subtitle', centerX, canvasSize * 0.44, 'center');
-    
-    // 第2页
-    setPos('p1-t1', margin, canvasSize * 0.18, 'left');
-    setPos('p1-t2', margin, canvasSize * 0.30, 'left');
-    setPos('p1-t3', margin, canvasSize * 0.50, 'left');
-    setPos('p1-t4', margin, canvasSize * 0.66, 'left');
-    setPos('p1-t5', margin, canvasSize * 0.82, 'left');
-    
-    // 第3页
-    setPos('p2-s1', margin, canvasSize * 0.15, 'left');
-    setPos('p2-s2', margin, canvasSize * 0.44, 'left');
-    setPos('p2-s3', margin, canvasSize * 0.73, 'left');
-    
-    // 第4页
-    setPos('p3-text', centerX, canvasSize * 0.40, 'center');
-    setPos('p3-sig', centerX, canvasSize * 0.60, 'center');
-}
-
-function setPos(id, x, y, align) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    
-    el.style.left = x + 'px';
-    el.style.top = y + 'px';
-    
-    if (align === 'center') {
-        el.style.transform = 'translateX(-50%)';
-        el.style.textAlign = 'center';
-    } else {
-        el.style.transform = 'none';
-        el.style.textAlign = 'left';
-    }
 }
 
 function draw() {
@@ -374,6 +206,7 @@ function drawCareDecoration() {
     strokeWeight(0.3);
     
     drawingContext.setLineDash([4, 3]);
+    noFill();
     beginShape();
     for (let a = 0; a <= PI; a += 0.1) {
         let x = map(a, 0, PI, x1 + 8, x2 - 8);
@@ -450,16 +283,7 @@ function drawTransition() {
 }
 
 // 处理点击/触摸
-function handlePress() {
-    if (!isTransitioning) {
-        isTransitioning = true;
-        pageTransition = 0;
-    }
-    return false;
-}
-
 function mousePressed() {
-    // 确保点击在画布内
     if (mouseX >= 0 && mouseX <= canvasSize && mouseY >= 0 && mouseY <= canvasSize) {
         handlePress();
     }
@@ -467,19 +291,23 @@ function mousePressed() {
 }
 
 function touchStarted() {
-    // 触摸事件处理
     if (touches.length > 0) {
-        let touch = touches[0];
-        // 转换触摸坐标到画布坐标
         let canvasRect = canvas.elt.getBoundingClientRect();
-        let tx = touch.x - canvasRect.left;
-        let ty = touch.y - canvasRect.top;
+        let tx = touches[0].x - canvasRect.left;
+        let ty = touches[0].y - canvasRect.top;
         
         if (tx >= 0 && tx <= canvasSize && ty >= 0 && ty <= canvasSize) {
             handlePress();
         }
     }
     return false;
+}
+
+function handlePress() {
+    if (!isTransitioning) {
+        isTransitioning = true;
+        pageTransition = 0;
+    }
 }
 
 function updateTextVisibility() {
